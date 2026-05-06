@@ -74,7 +74,7 @@ jobs:
       - name: Checkout (latest commit)
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: master
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
