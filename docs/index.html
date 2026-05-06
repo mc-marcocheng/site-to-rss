@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dev Weekly Aggregator</title>
+  <link rel="alternate" type="application/atom+xml" title="All Sources" href="feed.xml">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      color: #1a1a1a;
+      line-height: 1.6;
+      background: #fafafa;
+    }
+    h1 { margin-bottom: 0.5rem; }
+    .subtitle { color: #666; margin-bottom: 2rem; }
+    .feed-url {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.9rem;
+      word-break: break-all;
+      margin: 1rem 0;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .feed-url:hover { border-color: #0969da; }
+    .feed-url.copied { border-color: #2da44e; background: #f0fff4; }
+    .hint { font-size: 0.85rem; color: #888; margin-top: 0.5rem; margin-bottom: 2rem; }
+    .links { margin-top: 2rem; }
+    .links a {
+      color: #0969da;
+      text-decoration: none;
+      margin-right: 1.5rem;
+    }
+    .links a:hover { text-decoration: underline; }
+    .source-list { margin-top: 2rem; }
+    .source-item {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .source-info strong { display: block; }
+    .source-info span { color: #666; font-size: 0.85rem; }
+    .badge { display: inline-block; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <h1>📡 Dev Weekly Aggregator</h1>
+  <p class="subtitle">Curated tech readings, auto-aggregated</p>
+
+  <p><strong>Subscribe to All Sources:</strong></p>
+  <div class="feed-url" onclick="copyUrl(this, 'https://mc-marcocheng.github.io/site-to-rss/feed.xml')" title="Click to copy">https://mc-marcocheng.github.io/site-to-rss/feed.xml</div>
+
+  <div class="source-list">
+    <h2>Individual Sources</h2>
+
+    <div class="source-item">
+      <div class="source-info">
+        <strong>HelloGitHub</strong>
+        <span>open-source, monthly</span>
+      </div>
+      <div>
+        <a href="hellogithub.xml" title="XML Feed">📄 Feed</a>
+      </div>
+    </div>
+
+    <div class="source-item">
+      <div class="source-info">
+        <strong>科技爱好者周刊</strong>
+        <span>tech, weekly, chinese</span>
+      </div>
+      <div>
+        <a href="ruanyf-weekly.xml" title="XML Feed">📄 Feed</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="links">
+    <a href="feed.xml">📄 All-in-one Feed</a>
+    <a href="https://github.com/mc-marcocheng/site-to-rss">⚙️ GitHub Repo</a>
+  </div>
+
+  <div class="badge">
+    <img src="https://github.com/mc-marcocheng/site-to-rss/actions/workflows/check-updates.yml/badge.svg" alt="Status">
+  </div>
+
+  <script>
+    function copyUrl(el, url) {
+      navigator.clipboard.writeText(url).then(() => {
+        el.classList.add('copied');
+        let origText = el.innerText;
+        el.innerText = '✅ Copied!';
+        setTimeout(() => {
+          el.classList.remove('copied');
+          el.innerText = origText;
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
