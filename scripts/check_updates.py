@@ -41,7 +41,9 @@ def http_get(url: str, method: str = "GET") -> tuple:
     """Make an HTTP request. Returns (status_code, body)."""
     req = urllib.request.Request(url, method=method)
     req.add_header("User-Agent", USER_AGENT)
-    req.add_header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+    req.add_header(
+        "Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+    )
     req.add_header("Accept-Language", "en-US,en;q=0.5")
     try:
         resp = urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT)
@@ -70,7 +72,9 @@ def url_exists(url: str) -> bool:
 # ─── Content Extraction ───────────────────────────────────────────────────
 
 
-def extract_content(page_url: str, content_config: dict, template_vars: dict = None) -> str:
+def extract_content(
+    page_url: str, content_config: dict, template_vars: dict = None
+) -> str:
     """
     Fetch a page and extract content based on the config.
     Returns an HTML string to embed in the feed.
@@ -212,13 +216,13 @@ def _fix_relative_urls(html_str: str, base_url: str) -> str:
     # Fix src="relative/path"
     html_str = re.sub(
         r'(src=["\'])(?!http|data:|//|#)(.*?)(["\'])',
-        lambda m: f'{m.group(1)}{base_url}/{m.group(2)}{m.group(3)}',
+        lambda m: f"{m.group(1)}{base_url}/{m.group(2)}{m.group(3)}",
         html_str,
     )
     # Fix href="relative/path"
     html_str = re.sub(
         r'(href=["\'])(?!http|mailto:|javascript:|//|#)(.*?)(["\'])',
-        lambda m: f'{m.group(1)}{base_url}/{m.group(2)}{m.group(3)}',
+        lambda m: f"{m.group(1)}{base_url}/{m.group(2)}{m.group(3)}",
         html_str,
     )
     return html_str
@@ -292,24 +296,28 @@ class SequentialChecker(SourceChecker):
                 content_html = ""
                 if content_config:
                     template_vars = {"n": next_n}
-                    content_html = extract_content(item_url, content_config, template_vars)
+                    content_html = extract_content(
+                        item_url, content_config, template_vars
+                    )
                     if content_html:
                         size_kb = len(content_html.encode("utf-8")) / 1024
                         print(f"    📄 Content extracted: {size_kb:.1f} KB")
                     else:
-                        print(f"    📄 No content extracted (will use summary only)")
+                        print("    📄 No content extracted (will use summary only)")
 
-                new_items.append({
-                    "title": title_template.format(n=next_n),
-                    "link": item_url,
-                    "id": f"{self.source_id}-{next_n}",
-                    "updated": now,
-                    "summary": summary_template.format(n=next_n),
-                    "content": content_html,
-                    "source": self.source["name"],
-                    "source_id": self.source_id,
-                    "tags": tags,
-                })
+                new_items.append(
+                    {
+                        "title": title_template.format(n=next_n),
+                        "link": item_url,
+                        "id": f"{self.source_id}-{next_n}",
+                        "updated": now,
+                        "summary": summary_template.format(n=next_n),
+                        "content": content_html,
+                        "source": self.source["name"],
+                        "source_id": self.source_id,
+                        "tags": tags,
+                    }
+                )
                 print(f"    ✅ Found #{next_n}")
                 current = next_n
             else:
@@ -330,7 +338,6 @@ class GitHubReleaseChecker(SourceChecker):
         state_key = f"{self.source_id}_latest_release"
         repo = self.source["repo"]
         tags = self.source.get("tags", [])
-        content_config = self.source.get("content", None)
 
         print(f"  [{self.source['name']}] Checking releases for {repo}...")
 
@@ -351,7 +358,7 @@ class GitHubReleaseChecker(SourceChecker):
             return []
 
         if not releases:
-            print(f"    No releases found")
+            print("    No releases found")
             return []
 
         last_known = self.state.get(state_key, "")
@@ -375,9 +382,13 @@ class GitHubReleaseChecker(SourceChecker):
             tag = release["tag_name"]
             body = release.get("body", "") or ""
             name = release.get("name", tag) or tag
-            published = release.get("published_at") or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+            published = release.get("published_at") or datetime.now(
+                timezone.utc
+            ).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-            title_template = self.source.get("title", f"{self.source['name']} {'{tag}'}")
+            title_template = self.source.get(
+                "title", f"{self.source['name']} {'{tag}'}"
+            )
             summary_template = self.source.get("summary", "{body}")
 
             # Convert release body to HTML
@@ -385,17 +396,21 @@ class GitHubReleaseChecker(SourceChecker):
             if body:
                 content_html = _convert_markdown(body, "")
 
-            new_items.append({
-                "title": title_template.format(tag=tag, name=name),
-                "link": release["html_url"],
-                "id": f"{self.source_id}-{tag}",
-                "updated": published,
-                "summary": summary_template.format(body=body[:300], tag=tag, name=name),
-                "content": content_html,
-                "source": self.source["name"],
-                "source_id": self.source_id,
-                "tags": tags,
-            })
+            new_items.append(
+                {
+                    "title": title_template.format(tag=tag, name=name),
+                    "link": release["html_url"],
+                    "id": f"{self.source_id}-{tag}",
+                    "updated": published,
+                    "summary": summary_template.format(
+                        body=body[:300], tag=tag, name=name
+                    ),
+                    "content": content_html,
+                    "source": self.source["name"],
+                    "source_id": self.source_id,
+                    "tags": tags,
+                }
+            )
             print(f"    ✅ New release: {tag}")
 
         # Update state to latest
@@ -433,7 +448,9 @@ class WebpageChecker(SourceChecker):
         else:
             hash_source = body
 
-        content_hash = hashlib.sha256(hash_source.strip().encode("utf-8")).hexdigest()[:20]
+        content_hash = hashlib.sha256(hash_source.strip().encode("utf-8")).hexdigest()[
+            :20
+        ]
         last_hash = self.state.get(state_key, "")
 
         if not last_hash:
@@ -447,17 +464,19 @@ class WebpageChecker(SourceChecker):
             title_template = self.source.get("title", f"{self.source['name']} updated")
             summary_template = self.source.get("summary", "Page content has changed.")
 
-            new_items.append({
-                "title": title_template,
-                "link": url,
-                "id": f"{self.source_id}-{content_hash}",
-                "updated": now,
-                "summary": summary_template,
-                "content": content_html,
-                "source": self.source["name"],
-                "source_id": self.source_id,
-                "tags": tags,
-            })
+            new_items.append(
+                {
+                    "title": title_template,
+                    "link": url,
+                    "id": f"{self.source_id}-{content_hash}",
+                    "updated": now,
+                    "summary": summary_template,
+                    "content": content_html,
+                    "source": self.source["name"],
+                    "source_id": self.source_id,
+                    "tags": tags,
+                }
+            )
             print(f"    ✅ Content changed! (old: {last_hash}, new: {content_hash})")
         else:
             print(f"    No changes (hash: {content_hash})")
@@ -586,7 +605,9 @@ def generate_feed(items: list, feed_config: dict, file_path: str):
         el = SubElement(entry, "title")
         el.text = item.get("title", "Untitled")
 
-        SubElement(entry, "link", href=item.get("link", ""), rel="alternate", type="text/html")
+        SubElement(
+            entry, "link", href=item.get("link", ""), rel="alternate", type="text/html"
+        )
 
         el = SubElement(entry, "id")
         el.text = item.get("id", item.get("link", ""))
@@ -606,9 +627,21 @@ def generate_feed(items: list, feed_config: dict, file_path: str):
 
         # Source tags
         if item.get("source"):
-            SubElement(entry, "category", term=item["source"], scheme="source", label=item["source"])
+            SubElement(
+                entry,
+                "category",
+                term=item["source"],
+                scheme="source",
+                label=item["source"],
+            )
         if item.get("source_id"):
-            SubElement(entry, "category", term=item["source_id"], scheme="source_id", label=item["source_id"])
+            SubElement(
+                entry,
+                "category",
+                term=item["source_id"],
+                scheme="source_id",
+                label=item["source_id"],
+            )
 
         # Tags
         for tag in item.get("tags", []):
@@ -622,7 +655,9 @@ def generate_feed(items: list, feed_config: dict, file_path: str):
         f.write(xml_str)
 
     size_kb = Path(file_path).stat().st_size / 1024
-    print(f"📄 Written {file_path} ({len(items[:MAX_FEED_ITEMS])} items, {size_kb:.1f} KB)")
+    print(
+        f"📄 Written {file_path} ({len(items[:MAX_FEED_ITEMS])} items, {size_kb:.1f} KB)"
+    )
 
 
 # ─── Index Page Generation ─────────────────────────────────────────────────
@@ -685,9 +720,13 @@ def generate_index_html(sources: list, feed_config: dict):
     # Replace all placeholders
     html_content = template
     html_content = html_content.replace("<!-- FEED_TITLE -->", html_escape(title))
-    html_content = html_content.replace("<!-- FEED_SUBTITLE -->", html_escape(feed_config.get("subtitle", "")))
+    html_content = html_content.replace(
+        "<!-- FEED_SUBTITLE -->", html_escape(feed_config.get("subtitle", ""))
+    )
     html_content = html_content.replace("<!-- HERO_TITLE -->", html_escape(hero_title))
-    html_content = html_content.replace("<!-- HERO_SUBTITLE -->", html_escape(hero_subtitle))
+    html_content = html_content.replace(
+        "<!-- HERO_SUBTITLE -->", html_escape(hero_subtitle)
+    )
     html_content = html_content.replace("<!-- BASE_URL -->", html_escape(base_url))
     html_content = html_content.replace("<!-- FEED_URL -->", html_escape(feed_url))
     html_content = html_content.replace("<!-- REPO_URL -->", html_escape(repo_url))
@@ -729,7 +768,9 @@ def main():
     # Load state and existing feed
     state = load_state()
     existing_items = load_existing_items()
-    print(f"📂 Loaded state ({len(state)} keys) and {len(existing_items)} existing items\n")
+    print(
+        f"📂 Loaded state ({len(state)} keys) and {len(existing_items)} existing items\n"
+    )
 
     # Check each source
     all_new_items = []

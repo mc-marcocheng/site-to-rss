@@ -1,0 +1,17 @@
+[project]
+name = "rss-aggregator"
+version = "0.1.0"
+description = "Monitors website changes and converts them into RSS feeds you can subscribe to."
+requires-python = ">=3.12"
+dependencies = [
+    "cssselect==1.2.0",
+    "lxml==5.3.1",
+    "markdown==3.7",
+    "pyyaml==6.0.2",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.6.0",
+    "ruff>=0.15.12",
+]
