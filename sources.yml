@@ -1,6 +1,6 @@
 feed:
-  title: "Dev Weekly Aggregator"
-  subtitle: "Curated tech readings, auto-aggregated"
+  title: "Site-to-RSS Aggregator"
+  subtitle: "Monitor website changes, delivered as RSS · Updated daily"
   author: "RSS Bot"
   # CHANGE THIS to your GitHub Pages URL:
   base_url: "https://mc-marcocheng.github.io/site-to-rss"

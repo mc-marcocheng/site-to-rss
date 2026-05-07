@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Extensible RSS feed generator with full content extraction.
 Reads sources.yml, checks for new content, generates an Atom feed.
@@ -777,12 +776,12 @@ def main():
     # Generate main feed
     generate_feed(all_items, feed_config, FEED_FILE)
 
-    # Generate individual feeds
+    # Generate individual feeds (use source name as title, no prefix)
     for source in sources:
         s_id = source["id"]
         s_items = [item for item in all_items if item.get("source_id") == s_id]
         fc = feed_config.copy()
-        fc["title"] = f"{feed_config.get('title', 'Feed')} - {source.get('name', s_id)}"
+        fc["title"] = source.get("name", s_id)
         generate_feed(s_items, fc, f"docs/{s_id}.xml")
 
     # Generate HTML index
