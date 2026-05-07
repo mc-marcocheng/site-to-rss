@@ -243,6 +243,7 @@ def save_state(state: dict):
     """Save state to JSON file."""
     with open(STATE_FILE, "w", encoding="utf-8") as f:
         json.dump(state, f, indent=2, ensure_ascii=False)
+        f.write("\n")
 
 
 # ─── Source Checkers ───────────────────────────────────────────────────────
@@ -651,6 +652,9 @@ def generate_feed(items: list, feed_config: dict, file_path: str):
     xml_str = tostring(feed, encoding="unicode", xml_declaration=False)
     xml_str = '<?xml version="1.0" encoding="UTF-8"?>\n' + xml_str
 
+    if not xml_str.endswith("\n"):
+        xml_str += "\n"
+
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(xml_str)
 
@@ -735,6 +739,8 @@ def generate_index_html(sources: list, feed_config: dict):
 
     # Write output
     Path("docs").mkdir(parents=True, exist_ok=True)
+    if not html_content.endswith("\n"):
+        html_content += "\n"
     with open("docs/index.html", "w", encoding="utf-8") as f:
         f.write(html_content)
 
