@@ -29,6 +29,7 @@ import markdown
 SOURCES_FILE = "sources.yml"
 STATE_FILE = "state.json"
 FEED_FILE = "docs/feed.xml"
+INDEX_TEMPLATE = "templates/index_template.html"
 MAX_FEED_ITEMS = 100
 REQUEST_TIMEOUT = 30
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
@@ -125,7 +126,6 @@ def _extract_by_xpath(html_str: str, config: dict) -> str:
 
     if not elements:
         print(f"    ⚠️  XPath matched nothing: {xpath_expr}")
-        # Try a broader match
         return ""
 
     element = elements[0]
@@ -626,125 +626,80 @@ def generate_feed(items: list, feed_config: dict, file_path: str):
     print(f"📄 Written {file_path} ({len(items[:MAX_FEED_ITEMS])} items, {size_kb:.1f} KB)")
 
 
+# ─── Index Page Generation ─────────────────────────────────────────────────
+
+
 def generate_index_html(sources: list, feed_config: dict):
+    """Generate index.html from template and sources.yml data."""
     base_url = feed_config.get("base_url", "https://example.com").rstrip("/")
     repo_url = feed_config.get("repo_url", "#")
-    repo_path = repo_url.replace("https://github.com/", "") if repo_url.startswith("https://github.com/") else "unknown/unknown"
-    
-    html = f'''<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{feed_config.get("title", "RSS Aggregator")}</title>
-  <link rel="alternate" type="application/atom+xml" title="All Sources" href="feed.xml">
-  <style>
-    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-    body {{
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 3rem 1.5rem;
-      color: #1a1a1a;
-      line-height: 1.6;
-      background: #fafafa;
-    }}
-    h1 {{ margin-bottom: 0.5rem; }}
-    .subtitle {{ color: #666; margin-bottom: 2rem; }}
-    .feed-url {{
-      background: #fff;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 1rem 1.25rem;
-      font-family: "SF Mono", "Fira Code", monospace;
-      font-size: 0.9rem;
-      word-break: break-all;
-      margin: 1rem 0;
-      cursor: pointer;
-      transition: border-color 0.2s;
-    }}
-    .feed-url:hover {{ border-color: #0969da; }}
-    .feed-url.copied {{ border-color: #2da44e; background: #f0fff4; }}
-    .hint {{ font-size: 0.85rem; color: #888; margin-top: 0.5rem; margin-bottom: 2rem; }}
-    .links {{ margin-top: 2rem; }}
-    .links a {{
-      color: #0969da;
-      text-decoration: none;
-      margin-right: 1.5rem;
-    }}
-    .links a:hover {{ text-decoration: underline; }}
-    .source-list {{ margin-top: 2rem; }}
-    .source-item {{
-      background: #fff;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }}
-    .source-info strong {{ display: block; }}
-    .source-info span {{ color: #666; font-size: 0.85rem; }}
-    .badge {{ display: inline-block; margin-top: 2rem; }}
-  </style>
-</head>
-<body>
-  <h1>📡 {feed_config.get("title", "RSS Aggregator")}</h1>
-  <p class="subtitle">{feed_config.get("subtitle", "Auto-updated feed from multiple sources")}</p>
+    feed_url = f"{base_url}/feed.xml"
 
-  <p><strong>Subscribe to All Sources:</strong></p>
-  <div class="feed-url" onclick="copyUrl(this, '{base_url}/feed.xml')" title="Click to copy">{base_url}/feed.xml</div>
+    # Load template
+    template_path = Path(INDEX_TEMPLATE)
+    if not template_path.exists():
+        print(f"⚠️  Template not found at {INDEX_TEMPLATE}, skipping index generation.")
+        return
 
-  <div class="source-list">
-    <h2>Individual Sources</h2>
-'''
+    with open(template_path, "r", encoding="utf-8") as f:
+        template = f.read()
+
+    # Split feed title for hero display
+    title = feed_config.get("title", "RSS Aggregator")
+    title_words = title.split()
+    if len(title_words) >= 2:
+        hero_title = " ".join(title_words[:-1])
+        hero_subtitle = title_words[-1]
+    else:
+        hero_title = title
+        hero_subtitle = "FEEDS"
+
+    # Build source cards HTML
+    cards_html = ""
     for source in sources:
-        s_id = source['id']
-        s_name = source.get('name', s_id)
-        s_tags = ", ".join(source.get('tags', []))
-        html += f'''
-    <div class="source-item">
-      <div class="source-info">
-        <strong>{s_name}</strong>
-        <span>{s_tags}</span>
+        s_id = source["id"]
+        s_name = html_escape(source.get("name", s_id))
+        s_feed_url = f"{base_url}/{s_id}.xml"
+        s_tags = source.get("tags", [])
+
+        # Determine a visit URL (resolve template with start number)
+        s_url = source.get("url", "")
+        if "{n}" in s_url:
+            s_url = s_url.format(n=source.get("start", 1))
+
+        # Build tags HTML
+        tags_html = ""
+        for tag in s_tags:
+            tags_html += f'          <span class="card-tag">{html_escape(tag)}</span>\n'
+
+        cards_html += f'''      <div class="card">
+        <h3 class="card-title">{s_name}</h3>
+        <div class="card-tags">
+{tags_html}        </div>
+        <div class="card-actions">
+          <button class="card-btn" onclick="copyFeed(this, '{html_escape(s_feed_url)}')">⚡ SUBSCRIBE</button>
+          <a class="card-btn secondary" href="{html_escape(s_url)}" target="_blank" rel="noopener">↗ VISIT</a>
+        </div>
       </div>
-      <div>
-        <a href="{s_id}.xml" title="XML Feed">📄 Feed</a>
-      </div>
-    </div>
 '''
 
-    html += f'''
-  </div>
+    # Replace all placeholders
+    html_content = template
+    html_content = html_content.replace("<!-- FEED_TITLE -->", html_escape(title))
+    html_content = html_content.replace("<!-- FEED_SUBTITLE -->", html_escape(feed_config.get("subtitle", "")))
+    html_content = html_content.replace("<!-- HERO_TITLE -->", html_escape(hero_title))
+    html_content = html_content.replace("<!-- HERO_SUBTITLE -->", html_escape(hero_subtitle))
+    html_content = html_content.replace("<!-- BASE_URL -->", html_escape(base_url))
+    html_content = html_content.replace("<!-- FEED_URL -->", html_escape(feed_url))
+    html_content = html_content.replace("<!-- REPO_URL -->", html_escape(repo_url))
+    html_content = html_content.replace("<!-- TOTAL_SOURCES -->", str(len(sources)))
+    html_content = html_content.replace("<!-- SOURCE_CARDS -->", cards_html)
 
-  <div class="links">
-    <a href="feed.xml">📄 All-in-one Feed</a>
-    <a href="{repo_url}">⚙️ GitHub Repo</a>
-  </div>
-
-  <div class="badge">
-    <img src="https://github.com/{repo_path}/actions/workflows/check-updates.yml/badge.svg" alt="Status">
-  </div>
-
-  <script>
-    function copyUrl(el, url) {{
-      navigator.clipboard.writeText(url).then(() => {{
-        el.classList.add('copied');
-        let origText = el.innerText;
-        el.innerText = '✅ Copied!';
-        setTimeout(() => {{
-          el.classList.remove('copied');
-          el.innerText = origText;
-        }}, 2000);
-      }});
-    }}
-  </script>
-</body>
-</html>
-'''
+    # Write output
+    Path("docs").mkdir(parents=True, exist_ok=True)
     with open("docs/index.html", "w", encoding="utf-8") as f:
-        f.write(html)
+        f.write(html_content)
+
     print("📄 Written docs/index.html")
 
 
@@ -821,7 +776,7 @@ def main():
 
     # Generate main feed
     generate_feed(all_items, feed_config, FEED_FILE)
-    
+
     # Generate individual feeds
     for source in sources:
         s_id = source["id"]
@@ -832,7 +787,7 @@ def main():
 
     # Generate HTML index
     generate_index_html(sources, feed_config)
-        
+
     save_state(state)
 
     # GitHub Actions output
