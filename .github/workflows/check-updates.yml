@@ -51,6 +51,7 @@ jobs:
             echo "No changes to commit."
           else
             git commit -m "🔄 Feed updated (+${{ steps.check.outputs.new_count }} items) [$(date -u +%Y-%m-%d)]"
+            git pull --rebase origin master
             git push
           fi
 
