@@ -62,7 +62,9 @@ jobs:
 
   deploy-pages:
     needs: check-and-update
-    if: needs.check-and-update.outputs.committed == 'true'
+    # Scheduled runs with no changes skip the redeploy; a manual run is an
+    # explicit "publish now" and always deploys.
+    if: needs.check-and-update.outputs.committed == 'true' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
     environment:
