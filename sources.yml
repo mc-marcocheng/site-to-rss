@@ -43,3 +43,22 @@ sources:
       type: markdown
       fetch_url: "https://raw.githubusercontent.com/ruanyf/weekly/master/docs/issue-{n}.md"
       base_url: "https://raw.githubusercontent.com/ruanyf/weekly/master/docs"
+
+  # ──────────────────────────────────────────────────────────────
+  # GDG Hong Kong - Upcoming events only
+  # ──────────────────────────────────────────────────────────────
+  - id: gdg-hong-kong
+    name: GDG Hong Kong
+    type: json_list
+    # The "Upcoming Events" section on the chapter page is rendered
+    # client-side from this API (status=Live = upcoming). Everything else
+    # on the page is ignored.
+    url: "https://gdg.community.dev/api/event_slim/for_chapter/660/?page_size=20&status=Live&include_cohosted_events=true&visible_on_parent_chapter_only=true&order=start_date&fields=title,start_date,url,description,description_short&page=1"
+    visit_url: "https://gdg.community.dev/gdg-hong-kong/"
+    list_path: "results"
+    id_field: "url"
+    title_field: "title"
+    date_field: "start_date"
+    summary_field: "description_short"
+    content_field: "description"
+    tags: [events, gdg]

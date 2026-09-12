@@ -6,7 +6,7 @@ A powerful, lightweight, and extensible tool powered by GitHub Actions that moni
 
 - **Multi-Source Aggregation**: Subscribe to a single feed that combines all your monitored sources.
 - **Individual Feeds**: Every source gets its own dedicated Atom feed, allowing you to subscribe only to what you care about.
-- **Full Content Extraction**: Supports HTML (XPath/CSS), Markdown, and GitHub Release bodies.
+- **Full Content Extraction**: Supports HTML (XPath/CSS), Markdown, GitHub Release bodies, and JSON APIs.
 - **Dynamic Index Page**: Automatically generates a clean landing page listing all available sources and their feed links.
 - **Zero Maintenance**: Runs entirely on GitHub Actions; no server or database required.
 - **Change Detection**: Smart hashing to detect when a webpage has actually changed.
@@ -65,6 +65,22 @@ Converts GitHub repository releases into RSS entries.
   repo: "owner/repo"
   content:
     type: release_body
+```
+
+#### 4. JSON List
+Watches a JSON API that returns a list of items (e.g. event listings rendered client-side on a page) and emits one entry per new item. Use `visit_url` when the API URL isn't a nice page to link to.
+```yaml
+- id: my-events
+  name: My Events
+  type: json_list
+  url: "https://example.com/api/events/?status=upcoming"
+  visit_url: "https://example.com/events"   # optional, shown on the index page
+  list_path: "results"                      # JSON path to the array (default: results)
+  id_field: "url"                           # unique key per item (default: url)
+  title_field: "title"
+  date_field: "start_date"                  # optional, ISO-8601
+  summary_field: "excerpt"                  # optional, HTML is stripped to text
+  content_field: "description"              # optional, HTML
 ```
 
 ## How it Works

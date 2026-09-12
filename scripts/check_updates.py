@@ -12,7 +12,7 @@ import traceback
 import urllib.request
 import urllib.error
 from datetime import datetime, timezone
-from html import escape as html_escape
+from html import escape as html_escape, unescape as html_unescape
 from pathlib import Path
 from xml.etree.ElementTree import Element, SubElement, tostring, parse
 
@@ -486,12 +486,109 @@ class WebpageChecker(SourceChecker):
         return new_items
 
 
+def _normalize_ts(value) -> str:
+    """Normalize an ISO-8601 timestamp to UTC '%Y-%m-%dT%H:%M:%SZ'.
+    Falls back to the current time for missing or unparseable values."""
+    if value:
+        try:
+            dt = datetime.fromisoformat(str(value))
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        except ValueError:
+            pass
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _html_to_text(html_str: str) -> str:
+    """Collapse an HTML fragment to plain text (for text summaries)."""
+    text = re.sub(r"<[^>]+>", " ", html_str)
+    text = re.sub(r"\s+", " ", text).strip()
+    return html_unescape(text)
+
+
+class JsonListChecker(SourceChecker):
+    """
+    Watches a JSON API that returns a list of items (e.g. event listings
+    rendered client-side on the page). Emits one feed item per entry whose
+    id has never been seen before.
+    """
+
+    def check(self) -> list:
+        state_key = f"{self.source_id}_seen"
+        url = self.source["url"]
+        tags = self.source.get("tags", [])
+
+        print(f"  [{self.source['name']}] Checking {url}...")
+
+        status, body = http_get(url)
+        if status != 200 or not body:
+            print(f"    ❌ Failed to fetch (HTTP {status})")
+            return []
+
+        try:
+            data = json.loads(body)
+        except json.JSONDecodeError as e:
+            print(f"    ⚠️  Invalid JSON: {e}")
+            return []
+
+        # Walk down to the list itself (e.g. "results" in a paginated response)
+        list_path = self.source.get("list_path", "results").split(".")
+        for part in list_path:
+            data = data.get(part) if isinstance(data, dict) else None
+        if not isinstance(data, list):
+            print(f"    ⚠️  No list found at path '{'.'.join(list_path)}'")
+            return []
+
+        id_field = self.source.get("id_field", "url")
+        link_field = self.source.get("link_field", "url")
+        title_field = self.source.get("title_field", "title")
+        date_field = self.source.get("date_field", "")
+        summary_field = self.source.get("summary_field", "")
+        content_field = self.source.get("content_field", "")
+
+        seen = self.state.get(state_key, [])
+        new_items = []
+
+        for raw in data:
+            if not isinstance(raw, dict):
+                continue
+
+            item_key = str(raw.get(id_field) or raw.get(link_field) or "")
+            if not item_key or item_key in seen:
+                continue
+
+            content = str(raw.get(content_field) or "")
+            new_items.append(
+                {
+                    "title": str(raw.get(title_field) or "Untitled"),
+                    "link": str(raw.get(link_field) or ""),
+                    "id": f"{self.source_id}-"
+                    + hashlib.sha256(item_key.encode("utf-8")).hexdigest()[:16],
+                    "updated": _normalize_ts(raw.get(date_field)) if date_field
+                    else datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "summary": _html_to_text(str(raw.get(summary_field) or "")),
+                    "content": content,
+                    "source": self.source["name"],
+                    "source_id": self.source_id,
+                    "tags": tags,
+                }
+            )
+            seen.append(item_key)
+            print(f"    ✅ New item: {new_items[-1]['title']}")
+
+        # Cap growth: only the most recent keys matter for dedup
+        self.state[state_key] = seen[-200:]
+        return new_items
+
+
 # ─── Checker Registry ──────────────────────────────────────────────────────
 
 CHECKERS = {
     "sequential": SequentialChecker,
     "github_release": GitHubReleaseChecker,
     "webpage": WebpageChecker,
+    "json_list": JsonListChecker,
 }
 
 
@@ -715,7 +812,7 @@ def generate_index_html(sources: list, feed_config: dict):
         s_tags = source.get("tags", [])
 
         # Determine a visit URL (resolve template with start number)
-        s_url = source.get("url", "")
+        s_url = source.get("visit_url", source.get("url", ""))
         if "{n}" in s_url:
             s_url = s_url.format(n=source.get("start", 1))
 
