@@ -565,9 +565,25 @@ def load_existing_items() -> list:
     return items
 
 
+def _feed_updated(feed_items: list) -> str:
+    """Feed-level <updated>: the newest entry timestamp.
+
+    Derived from the entries instead of the wall clock so regenerating an
+    unchanged feed produces byte-identical output (the workflow relies on an
+    empty git diff to skip its commit). All timestamps are fixed-width
+    ISO-8601 UTC, so string order is time order.
+    """
+    latest = ""
+    for item in feed_items:
+        if item.get("updated", "") > latest:
+            latest = item["updated"]
+    return latest or "1970-01-01T00:00:00Z"
+
+
 def generate_feed(items: list, feed_config: dict, file_path: str):
     """Generate an Atom XML feed file."""
     Path(file_path).parent.mkdir(parents=True, exist_ok=True)
+    feed_items = items[:MAX_FEED_ITEMS]
 
     base_url = feed_config.get("base_url", "https://example.com").rstrip("/")
     filename = Path(file_path).name
@@ -590,7 +606,7 @@ def generate_feed(items: list, feed_config: dict, file_path: str):
     el.text = feed_url
 
     el = SubElement(feed, "updated")
-    el.text = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    el.text = _feed_updated(feed_items)
 
     el = SubElement(feed, "generator")
     el.text = "rss-aggregator"
@@ -600,7 +616,7 @@ def generate_feed(items: list, feed_config: dict, file_path: str):
     el.text = feed_config.get("author", "Bot")
 
     # Entries
-    for item in items[:MAX_FEED_ITEMS]:
+    for item in feed_items:
         entry = SubElement(feed, "entry")
 
         el = SubElement(entry, "title")
@@ -659,9 +675,7 @@ def generate_feed(items: list, feed_config: dict, file_path: str):
         f.write(xml_str)
 
     size_kb = Path(file_path).stat().st_size / 1024
-    print(
-        f"📄 Written {file_path} ({len(items[:MAX_FEED_ITEMS])} items, {size_kb:.1f} KB)"
-    )
+    print(f"📄 Written {file_path} ({len(feed_items)} items, {size_kb:.1f} KB)")
 
 
 # ─── Index Page Generation ─────────────────────────────────────────────────

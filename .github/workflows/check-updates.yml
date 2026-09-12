@@ -24,6 +24,7 @@ jobs:
     outputs:
       has_updates: ${{ steps.check.outputs.has_updates }}
       new_count: ${{ steps.check.outputs.new_count }}
+      committed: ${{ steps.commit.outputs.committed }}
 
     steps:
       - name: Checkout repository
@@ -44,20 +45,24 @@ jobs:
         run: uv run scripts/check_updates.py
 
       - name: Commit and push changes
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add state.json docs/*.xml docs/index.html
           if git diff --staged --quiet; then
             echo "No changes to commit."
+            echo "committed=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "🔄 Feed updated (+${{ steps.check.outputs.new_count }} items) [$(date -u +%Y-%m-%d)]"
             git pull --rebase origin master
             git push
+            echo "committed=true" >> "$GITHUB_OUTPUT"
           fi
 
   deploy-pages:
     needs: check-and-update
+    if: needs.check-and-update.outputs.committed == 'true'
     runs-on: ubuntu-latest
 
     environment:
