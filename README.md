@@ -2,6 +2,8 @@
 
 A powerful, lightweight, and extensible tool powered by GitHub Actions that monitors website changes and converts them into high-quality RSS (Atom) feeds. Perfect for sites that don't provide their own feeds.
 
+![Site-to-RSS landing page with the aggregated feed link and all monitored sources](assets/landing-page.png)
+
 ## Key Features
 
 - **Multi-Source Aggregation**: Subscribe to a single feed that combines all your monitored sources.
