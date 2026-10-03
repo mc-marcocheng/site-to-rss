@@ -62,3 +62,25 @@ sources:
     summary_field: "description_short"
     content_field: "description"
     tags: [events, gdg]
+
+  # ──────────────────────────────────────────────────────────────
+  # Open Source Hong Kong - Posts listed on the index page
+  # ──────────────────────────────────────────────────────────────
+  - id: opensource-hk
+    name: Open Source Hong Kong
+    type: json_list
+    # The index page (https://opensource.hk/) server-renders its post
+    # list; the WordPress REST API returns the same posts. Every post
+    # has an English twin at the site root and a Chinese twin under
+    # /zh/ — exclude the /zh/ ones so each event appears once, exactly
+    # like the English index page.
+    url: "https://opensource.hk/wp-json/wp/v2/posts?per_page=20&_fields=date_gmt,link,title,excerpt,content"
+    visit_url: "https://opensource.hk/"
+    id_field: "link"
+    link_field: "link"
+    title_field: "title.rendered"
+    date_field: "date_gmt"
+    summary_field: "excerpt.rendered"
+    content_field: "content.rendered"
+    exclude: ["/zh/"]
+    tags: [events, open-source]

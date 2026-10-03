@@ -500,6 +500,15 @@ def _normalize_ts(value) -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def _get_field(obj, path: str):
+    """Resolve a dotted field path (e.g. 'title.rendered') inside a dict."""
+    for part in path.split("."):
+        if not isinstance(obj, dict):
+            return None
+        obj = obj.get(part)
+    return obj
+
+
 def _html_to_text(html_str: str) -> str:
     """Collapse an HTML fragment to plain text (for text summaries)."""
     text = re.sub(r"<[^>]+>", " ", html_str)
@@ -532,10 +541,14 @@ class JsonListChecker(SourceChecker):
             print(f"    ⚠️  Invalid JSON: {e}")
             return []
 
-        # Walk down to the list itself (e.g. "results" in a paginated response)
+        # Walk down to the list itself (e.g. "results" in a paginated
+        # response). Stops early when the payload is already the list
+        # (top-level JSON array).
         list_path = self.source.get("list_path", "results").split(".")
         for part in list_path:
-            data = data.get(part) if isinstance(data, dict) else None
+            if not isinstance(data, dict):
+                break
+            data = data.get(part)
         if not isinstance(data, list):
             print(f"    ⚠️  No list found at path '{'.'.join(list_path)}'")
             return []
@@ -546,6 +559,7 @@ class JsonListChecker(SourceChecker):
         date_field = self.source.get("date_field", "")
         summary_field = self.source.get("summary_field", "")
         content_field = self.source.get("content_field", "")
+        exclude = self.source.get("exclude", [])
 
         seen = self.state.get(state_key, [])
         new_items = []
@@ -554,20 +568,27 @@ class JsonListChecker(SourceChecker):
             if not isinstance(raw, dict):
                 continue
 
-            item_key = str(raw.get(id_field) or raw.get(link_field) or "")
+            item_key = str(
+                _get_field(raw, id_field) or _get_field(raw, link_field) or ""
+            )
             if not item_key or item_key in seen:
                 continue
+            if any(pattern in item_key for pattern in exclude):
+                continue
 
-            content = str(raw.get(content_field) or "")
+            content = str(_get_field(raw, content_field) or "")
             new_items.append(
                 {
-                    "title": str(raw.get(title_field) or "Untitled"),
-                    "link": str(raw.get(link_field) or ""),
+                    "title": html_unescape(
+                        str(_get_field(raw, title_field) or "Untitled")
+                    ),
+                    "link": str(_get_field(raw, link_field) or ""),
                     "id": f"{self.source_id}-"
                     + hashlib.sha256(item_key.encode("utf-8")).hexdigest()[:16],
-                    "updated": _normalize_ts(raw.get(date_field)) if date_field
+                    "updated": _normalize_ts(_get_field(raw, date_field))
+                    if date_field
                     else datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                    "summary": _html_to_text(str(raw.get(summary_field) or "")),
+                    "summary": _html_to_text(str(_get_field(raw, summary_field) or "")),
                     "content": content,
                     "source": self.source["name"],
                     "source_id": self.source_id,

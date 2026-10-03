@@ -77,12 +77,16 @@ Watches a JSON API that returns a list of items (e.g. event listings rendered cl
   type: json_list
   url: "https://example.com/api/events/?status=upcoming"
   visit_url: "https://example.com/events"   # optional, shown on the index page
-  list_path: "results"                      # JSON path to the array (default: results)
+  list_path: "results"                      # JSON path to the array (default: results);
+                                            # omit if the response is a top-level array
   id_field: "url"                           # unique key per item (default: url)
-  title_field: "title"
+  title_field: "title"                      # dotted paths into nested objects work,
+                                            # e.g. "title.rendered" (WordPress REST API)
   date_field: "start_date"                  # optional, ISO-8601
   summary_field: "excerpt"                  # optional, HTML is stripped to text
   content_field: "description"              # optional, HTML
+  exclude: ["/zh/"]                         # optional, skip items whose id/link
+                                            # contains any of these substrings
 ```
 
 ## How it Works
