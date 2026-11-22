@@ -1,5 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Site-to-RSS Aggregator</title><subtitle>Monitor website changes, delivered as RSS · Updated daily</subtitle><link href="https://mc-marcocheng.github.io/site-to-rss/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mc-marcocheng.github.io/site-to-rss" rel="alternate" type="text/html" /><id>https://mc-marcocheng.github.io/site-to-rss/feed.xml</id><updated>2026-12-05T01:00:00Z</updated><generator>rss-aggregator</generator><author><name>RSS Bot</name></author><entry><title>科技爱好者周刊 Issue 420</title><link href="https://github.com/ruanyf/weekly/blob/master/docs/issue-420.md" rel="alternate" type="text/html" /><id>ruanyf-weekly-420</id><updated>2026-11-20T14:47:34Z</updated><summary type="text">Ruanyf's Tech Weekly issue 420 is now available.</summary><content type="html">&lt;h1 id="420"&gt;科技爱好者周刊（第 420 期）：最分心的一年&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Site-to-RSS Aggregator</title><subtitle>Monitor website changes, delivered as RSS · Updated daily</subtitle><link href="https://mc-marcocheng.github.io/site-to-rss/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mc-marcocheng.github.io/site-to-rss" rel="alternate" type="text/html" /><id>https://mc-marcocheng.github.io/site-to-rss/feed.xml</id><updated>2026-12-05T01:00:00Z</updated><generator>rss-aggregator</generator><author><name>RSS Bot</name></author><entry><title>📣 Supported Event | AMD AI DevDay World Tour – Hong Kong</title><link href="https://opensource.hk/%f0%9f%93%a3-supported-event-amd-ai-devday-world-tour-hong-kong/" rel="alternate" type="text/html" /><id>opensource-hk-69e0e0285d7ea85f</id><updated>2026-11-22T03:49:59Z</updated><summary type="text">Hong Kong AI builders—join the AMD AI DevDay World Tour, supported by Open Source Hong Kong!</summary><content type="html">
+&lt;p class="wp-block-paragraph"&gt;Hong Kong AI builders—join the AMD AI DevDay World Tour, supported by Open Source Hong Kong!&lt;/p&gt;
+
+
+
+&lt;!--more--&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Hong Kong AI builders, this one’s for you! 🚀&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Join the &lt;strong&gt;first Hong Kong edition of AMD’s AI DevDay World Tour&lt;/strong&gt; for a free day of technical learning, hands-on workshops, live demos, and direct access to AMD engineers.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Whether you’re developing AI applications, exploring GPU computing, conducting research, or building your next project, this is an opportunity to develop practical skills and connect with Hong Kong’s AI community.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;🏆 &lt;strong&gt;Featured Session | Get ROCm™ Certified &amp;amp; Take Home an Official Trophy&lt;/strong&gt;&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Build your AMD GPU skills with &lt;strong&gt;three hours of step-by-step training, hands-on guidance from AMD engineers and teaching assistants, and an on-site assessment&lt;/strong&gt;.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Get support as you work through the exercises, ask technical questions, and put your learning into practice. &lt;strong&gt;Pass the assessment and meet the event requirements to earn an official AMD ROCm certification—and take home an official physical trophy to celebrate your achievement.&lt;/strong&gt;&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;✅ &lt;strong&gt;Want to join? Select the ROCm Certification session during registration.&lt;/strong&gt;&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Prior programming experience is recommended; familiarity with Python, Linux, or AI frameworks will help you get the most out of the session.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;🤖 &lt;strong&gt;Explore What’s Next | Physical AI × Agentic AI&lt;/strong&gt;&lt;br&gt;Discover embodied intelligence, AI agents, and open-source AI—and explore how AMD GPUs power real-world applications.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;🛠️ &lt;strong&gt;Learn by Building | Hands-on Workshops × Live Demos&lt;/strong&gt;&lt;br&gt;Gain practical experience with AMD GPUs and ROCm through technical sessions, interactive demonstrations, and hands-on development.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;🤝 &lt;strong&gt;Connect with the Experts | Engineers × Developer Community&lt;/strong&gt;&lt;br&gt;Meet AMD engineers, developers, and researchers. Bring your questions, exchange ideas, and find new collaborators for your next project.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;📅 &lt;strong&gt;Date:&lt;/strong&gt; November 29, 2026&lt;br&gt;&lt;strong&gt;📍&lt;/strong&gt; &lt;strong&gt;Venue:&lt;/strong&gt; Charles K. Kao Auditorium (“Golden Egg”), Hong Kong Science Park&lt;br&gt;🎟️ &lt;strong&gt;Admission:&lt;/strong&gt; Free&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;👉 &lt;strong&gt;Register here:&lt;/strong&gt;&lt;br&gt;&lt;a href="https://amd.cventevents.com/event/192368c2-c4c2-4c2a-ac92-9712b57e17c0/register?utm_source=ranjun&amp;amp;utm_medium=amder&amp;amp;utm_campaign=WorldTour26_HongKong" target="_blank" rel="noopener"&gt;https://amd.cventevents.com/event/192368c2-c4c2-4c2a-ac92-9712b57e17c0/register?utm_source=ranjun&amp;amp;utm_medium=amder&amp;amp;utm_campaign=WorldTour26_HongKong&lt;/a&gt;&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;&lt;strong&gt;Remember to select the ROCm Certification session when registering if you wish to participate.&lt;/strong&gt;&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;👉 &lt;strong&gt;Event details:&lt;/strong&gt;&lt;br&gt;&lt;a href="https://amd.cventevents.com/event/192368c2-c4c2-4c2a-ac92-9712b57e17c0/welcome" target="_blank" rel="noopener"&gt;https://amd.cventevents.com/event/192368c2-c4c2-4c2a-ac92-9712b57e17c0/welcome&lt;/a&gt;&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Spaces are limited. Certification and trophy eligibility are subject to passing the official assessment and meeting the event requirements.&lt;/p&gt;
+</content><category term="Open Source Hong Kong" scheme="source" label="Open Source Hong Kong" /><category term="opensource-hk" scheme="source_id" label="opensource-hk" /><category term="events" label="events" /><category term="open-source" label="open-source" /></entry><entry><title>科技爱好者周刊 Issue 420</title><link href="https://github.com/ruanyf/weekly/blob/master/docs/issue-420.md" rel="alternate" type="text/html" /><id>ruanyf-weekly-420</id><updated>2026-11-20T14:47:34Z</updated><summary type="text">Ruanyf's Tech Weekly issue 420 is now available.</summary><content type="html">&lt;h1 id="420"&gt;科技爱好者周刊（第 420 期）：最分心的一年&lt;/h1&gt;
 &lt;p&gt;这里记录每周值得分享的科技内容，周五发布。&lt;/p&gt;
 &lt;p&gt;本杂志&lt;a href="https://github.com/ruanyf/weekly"&gt;开源&lt;/a&gt;，欢迎&lt;a href="https://github.com/ruanyf/weekly/issues"&gt;投稿&lt;/a&gt;。另有&lt;a href="https://github.com/ruanyf/weekly/issues/12953"&gt;《谁在招人》&lt;/a&gt;服务，发布程序员招聘信息。合作请&lt;a href="mailto:yifeng.ruan@gmail.com"&gt;邮件联系&lt;/a&gt;（yifeng.ruan@gmail.com）。&lt;/p&gt;
 &lt;h2 id="_1"&gt;封面图&lt;/h2&gt;
