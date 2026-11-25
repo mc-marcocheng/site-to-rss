@@ -1,5 +1,177 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Site-to-RSS Aggregator</title><subtitle>Monitor website changes, delivered as RSS · Updated daily</subtitle><link href="https://mc-marcocheng.github.io/site-to-rss/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mc-marcocheng.github.io/site-to-rss" rel="alternate" type="text/html" /><id>https://mc-marcocheng.github.io/site-to-rss/feed.xml</id><updated>2026-12-05T01:00:00Z</updated><generator>rss-aggregator</generator><author><name>RSS Bot</name></author><entry><title>Open Source Hong Kong Supports DevFest Hong Kong 2026</title><link href="https://opensource.hk/open-source-hong-kong-supports-devfest-hong-kong-2026/" rel="alternate" type="text/html" /><id>opensource-hk-3d35429bb2655188</id><updated>2026-11-23T04:39:33Z</updated><summary type="text">Open Source Hong Kong is pleased to support DevFest Hong Kong 2026 x HKPC Academy and invites developers and technology enthusiasts to join this annual gathering of Hong Kong’s developer community.</summary><content type="html">
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Site-to-RSS Aggregator</title><subtitle>Monitor website changes, delivered as RSS · Updated daily</subtitle><link href="https://mc-marcocheng.github.io/site-to-rss/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mc-marcocheng.github.io/site-to-rss" rel="alternate" type="text/html" /><id>https://mc-marcocheng.github.io/site-to-rss/feed.xml</id><updated>2026-12-05T01:00:00Z</updated><generator>rss-aggregator</generator><author><name>RSS Bot</name></author><entry><title>OSHK Dec Meetup 2026 – Building AI Agents in Practice</title><link href="https://opensource.hk/oshk-dec-meetup-2026-building-ai-agents-in-practice/" rel="alternate" type="text/html" /><id>opensource-hk-1285490386b720e8</id><updated>2026-11-25T07:19:18Z</updated><summary type="text">Let’s bring the open-source community together to wrap up 2026 with an evening of sharing, conversations, and connections.</summary><content type="html">
+&lt;p class="wp-block-paragraph"&gt;Let’s bring the open-source community together to wrap up 2026 with an evening of sharing, conversations, and connections.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Join Gabriel Chan from E-Label Solutions, Felix Tsang from Red Hat, and Elena Lee from Elastic as they explore the journey from open-source tools to agentic workflows, practical approaches to evaluating enterprise AI agents, and the role of live data and context in agent performance.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;A big thank you to &lt;strong&gt;Confluent&lt;/strong&gt; for sponsoring food and drinks for this meetup!&lt;/p&gt;
+
+
+
+&lt;h2 class="wp-block-heading"&gt;Registration and Venue&lt;/h2&gt;
+
+
+
+&lt;h3 class="wp-block-heading"&gt;How to Register&lt;/h3&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Please complete both steps to confirm your attendance and arrange building security access:&lt;/p&gt;
+
+
+
+&lt;ol class="wp-block-list"&gt;
+&lt;li&gt;RSVP on Meetup: Visit the &lt;a href="https://www.meetup.com/opensourcehk/events/317475257/" target="_blank" rel="noopener"&gt;&lt;strong&gt;Meetup event page&lt;/strong&gt;&lt;/a&gt; and click “Attend event”.&lt;/li&gt;
+
+
+
+&lt;li&gt;Complete the security registration: Fill in the &lt;a href="https://forms.gle/jRZdJn6NhjTaKGm76" target="_blank" rel="noopener"&gt;&lt;strong&gt;Google registration form&lt;/strong&gt;&lt;/a&gt; before attending.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Important: An RSVP on Meetup alone is not enough—you must also complete the Google form for building security access.&lt;/p&gt;
+
+
+
+&lt;h3 class="wp-block-heading"&gt;Venue&lt;/h3&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Systex&lt;br&gt;14/F, TAL Building, 49 Austin Road, Kowloon, Hong Kong&lt;/p&gt;
+
+
+
+&lt;h2 class="wp-block-heading"&gt;Session 1: From Open Source to Agentic Workflows&lt;/h2&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Speaker: Gabriel Chan · E-Label Solutions&lt;br&gt;Duration: 15 minutes&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;At E-Label Solutions—a local company delivering e-ink display, sensor, tracker, and RFID solutions—open source was simply the default: a kanban board, a chat server, a Git server, and more.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Then those tools became something more. Today, the team’s AI colleagues file tasks, message teammates, and ask for approval before taking action. Gabriel retraces the journey from adopting open-source software to designing agentic workflows on top of it.&lt;/p&gt;
+
+
+
+&lt;h3 class="wp-block-heading"&gt;About Gabriel&lt;/h3&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Gabriel is a Solution Consultant at E-Label Solutions. Before that, he spent a decade as a full-stack developer across fields ranging from virtual reality and e-commerce to firmware—and his favourite, working with cows.&lt;/p&gt;
+
+
+
+&lt;h2 class="wp-block-heading"&gt;Session 2: Evaluation-Driven Development: Building Enterprise AI Agents with Quality and Reliability&lt;/h2&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Speaker: Felix Tsang · Red Hat&lt;br&gt;Duration: 40 minutes&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Building an AI agent is easy. Updating it—or swapping the underlying model—without breaking what already works is much harder. A minor prompt tweak, tool update, or model upgrade can quietly disrupt production workflows, introduce subtle regressions, or reduce response quality.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;In this session, Felix introduces Evaluation-Driven Development (EDD), a practical methodology that places automated evaluations at the foundation of the AI engineering lifecycle.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Drawing on real-world enterprise deployments, he will explore how to:&lt;/p&gt;
+
+
+
+&lt;ul class="wp-block-list"&gt;
+&lt;li&gt;Define measurable business and technical KPIs.&lt;/li&gt;
+
+
+
+&lt;li&gt;Build golden datasets for evaluating agent performance.&lt;/li&gt;
+
+
+
+&lt;li&gt;Run continuous evaluation pipelines.&lt;/li&gt;
+
+
+
+&lt;li&gt;Safely iterate on agent logic and upgrade foundation models.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Attendees will learn how to move towards AI agents that deliver consistent quality, reliability, and measurable business value at scale.&lt;/p&gt;
+
+
+
+&lt;h3 class="wp-block-heading"&gt;About Felix&lt;/h3&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Felix Tsang is a Business Value Director at Red Hat and an Open Source Evangelist at Linux Foundation APAC. He partners with enterprise leaders to align open-source cloud, automation, and AI architectures with measurable business outcomes.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;With deep expertise in translating complex technical capabilities into strategic ROI, Felix helps organisations navigate the transition from AI experimentation to reliable, production-grade deployment.&lt;/p&gt;
+
+
+
+&lt;h2 class="wp-block-heading"&gt;Session 3: Context Engine in Practice — Kafka and Elasticsearch&lt;/h2&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Speaker: Elena Lee · Elastic&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Give AI agents the same live data and business questions, and you can still get wildly different results. What makes the difference: better tools or richer context?&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Elena explores a recent social-pulse benchmark in which a pipeline streamed shop events, Bluesky posts, and business facts through Kafka and Logstash into Elasticsearch. Three Agent Builder setups were then tested head-to-head:&lt;/p&gt;
+
+
+
+&lt;ul class="wp-block-list"&gt;
+&lt;li&gt;An agent relying on platform tools.&lt;/li&gt;
+
+
+
+&lt;li&gt;An agent equipped with custom ES|QL tools.&lt;/li&gt;
+
+
+
+&lt;li&gt;An agent powered by a Context Engine AI index.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;For facts stored exclusively in the AI index, the context-backed agent scored 8 out of 8, while the other two scored zero. But more context is not always the answer: well-designed ES|QL tools also demonstrated that they could match accuracy at a lower cost.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;The session examines actual token costs, data-freshness trade-offs between pushing updates through Kafka and pulling them on a managed schedule, and a practical rule of thumb for deciding when an agent needs stronger tools versus richer context.&lt;/p&gt;
+
+
+
+&lt;h3 class="wp-block-heading"&gt;About Elena&lt;/h3&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;Elena Lee is Senior Solutions Architect Lead for Hong Kong and Taiwan at Elastic, where she helps enterprises accelerate cloud and AI transformation.&lt;/p&gt;
+
+
+
+&lt;p class="wp-block-paragraph"&gt;With more than five years of architecture experience at Elastic, she guides organisations in building production-ready generative and agentic AI applications. Her work brings together Search AI, observability, and security to ground intelligent agents in proprietary enterprise data.&lt;/p&gt;
+</content><category term="Open Source Hong Kong" scheme="source" label="Open Source Hong Kong" /><category term="opensource-hk" scheme="source_id" label="opensource-hk" /><category term="events" label="events" /><category term="open-source" label="open-source" /></entry><entry><title>Open Source Hong Kong Supports DevFest Hong Kong 2026</title><link href="https://opensource.hk/open-source-hong-kong-supports-devfest-hong-kong-2026/" rel="alternate" type="text/html" /><id>opensource-hk-3d35429bb2655188</id><updated>2026-11-23T04:39:33Z</updated><summary type="text">Open Source Hong Kong is pleased to support DevFest Hong Kong 2026 x HKPC Academy and invites developers and technology enthusiasts to join this annual gathering of Hong Kong’s developer community.</summary><content type="html">
 &lt;p class="wp-block-paragraph"&gt;Open Source Hong Kong is pleased to support DevFest Hong Kong 2026 x HKPC Academy and invites developers and technology enthusiasts to join this annual gathering of Hong Kong’s developer community.&lt;/p&gt;
 
 
